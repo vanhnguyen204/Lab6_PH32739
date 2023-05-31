@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivityHome"
+    android:orientation="vertical"
+    android:padding="16dp"
+
+    >
+<TextView
+
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/nameTitle"
+    android:textAllCaps="true"
+    android:textSize="24sp"
+    android:gravity="center"
+    android:background="@drawable/border_edt"
+    android:backgroundTint="#8BC34A"
+    android:textStyle="bold"
+    />
+
+    <Button
+        android:id="@+id/btn_addTpList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:text="@string/addToList"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:backgroundTint="#D81B60"
+        />
+
+    <ListView
+        android:id="@+id/listview_student"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:dividerHeight="1dp"
+        android:divider="@color/black"
+        />
+</LinearLayout>
