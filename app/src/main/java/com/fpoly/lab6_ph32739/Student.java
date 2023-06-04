@@ -1,4 +1,4 @@
-package com.fpoly.lab5_ph32739;
+package com.fpoly.lab6_ph32739;
 
 import java.io.Serializable;
 

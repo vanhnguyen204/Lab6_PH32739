@@ -1,4 +1,4 @@
-package com.fpoly.lab5_ph32739;
+package com.fpoly.lab6_ph32739;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,7 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
+import com.fpoly.lab5_ph32739.R;
 
 import java.util.ArrayList;
 

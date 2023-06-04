@@ -1,41 +1,22 @@
-package com.fpoly.lab5_ph32739;
+package com.fpoly.lab6_ph32739;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.SearchManager;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.hardware.display.DisplayManager;
 import android.os.Bundle;
-import android.os.PowerManager;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.Toast;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
+import com.fpoly.lab5_ph32739.R;
+
 import java.util.ArrayList;
 
 public class MainActivityHome extends AppCompatActivity {
@@ -82,8 +63,6 @@ public  static  String KEY_STUDENT = "student";
         arrayList.add(new Student("Fpoly Đà Nẵng", "Nguyễn Bảo Anh", "Đà Nẵng"));
         arrayList.add(new Student("Fpoly Hải Phòng", "Nguyễn Lâm Anh", "Hải Phòng"));
         setChangeDataInArrayAdt();
-
-
 
 
 
