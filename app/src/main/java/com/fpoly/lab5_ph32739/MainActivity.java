@@ -2,6 +2,7 @@ package com.fpoly.lab5_ph32739;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,12 +16,11 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
-    public static String KEY_USERNAME = "user_name";
-    public static String KEY_HOMETOWN = "home_town";
-    public static String KEY_PLACE = "place";
-    public static  String KEY_STUDENT = "student";
-    public static String BUTTON_UPDATE_CLICK ="";
-    public static String KEY_SUBMIT ="";
+    public static String KEY_SEND_STUDENT= "SEND_DATA";
+    public static String KEY_SEND_NAME= "SEND_NAME";
+    public static String KEY_SEND_HOME= "SEND_HOME";
+    public static String KEY_SEND_PLACE= "SEND_PLACE";
+
     String place;
 
     @Override
@@ -39,24 +39,10 @@ public class MainActivity extends AppCompatActivity {
         ChoosePlaces choosePlaces = new ChoosePlaces(this, arrayList);
         spn.setAdapter(choosePlaces);
 
-        EditText edtPlace = findViewById(R.id.edt_address);
 
-
-        spn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                place = arrayList.get(position).getNamePlace();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         EditText edtUsername = findViewById(R.id.edt_name);
         EditText edtAddress = findViewById(R.id.edt_address);
 
-        Button btnSubmit = findViewById(R.id.btn_submit);
         spn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -69,76 +55,55 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        spn.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                place = arrayList.get(position).getNamePlace();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+        Button btnSubmit = findViewById(R.id.btn_submit);
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                KEY_SUBMIT ="submit";
+
                 String getUser = edtUsername.getText().toString();
                 String getAddress = edtAddress.getText().toString();
 
                 if (getUser.length() == 0 || getUser.trim().equals("")) {
-                    Toast.makeText(MainActivity.this, "bạn phải nhập tên để thêm !", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Bạn phải nhập tên để thêm !", Toast.LENGTH_SHORT).show();
                 } else if (getAddress.length() == 0 || getAddress.trim().equals("")) {
                     Toast.makeText(MainActivity.this, "Bạn phải nhập quê quán để thêm !", Toast.LENGTH_SHORT).show();
                 } else {
-                    Intent intent = new Intent(getApplicationContext(), MainActivityHome.class);
-                    intent.putExtra(KEY_PLACE,place);
-                    intent.putExtra(KEY_USERNAME,getUser);
-                    intent.putExtra(KEY_HOMETOWN,getAddress);
-                    startActivity(intent);
+                    Intent intent = new Intent();
+                    Bundle bundle = new Bundle();
+                   bundle.putString(KEY_SEND_NAME,getUser);
+                   bundle.putString(KEY_SEND_HOME,getAddress);
+                   bundle.putString(KEY_SEND_PLACE,place);
+                    intent.putExtras(bundle);
+                    setResult(Activity.RESULT_OK, intent);
+                    finish();
                 }
             }
         });
+        Student updatePositionStudent =  (Student) getIntent().getSerializableExtra(MainActivityHome.KEY_STUDENT);
+        if (updatePositionStudent!= null){
 
-        // Nhận dữ liệu khi click update
-        String getPlaceUpdate = getIntent().getStringExtra("place");
-        String getUserUpdate = getIntent().getStringExtra("name");
-        String getAddressUpdate = getIntent().getStringExtra("home");
-        edtUsername.setText(getUserUpdate);
-        edtAddress.setText(getAddressUpdate);
-        selectValue(spn,getPlaceUpdate);
-
-
-        Button btnUpdateAtLogin = findViewById(R.id.btn_updateBack);
-        if (ListStudentAdapter.setEnableClick.equals("enable")){
-            btnUpdateAtLogin.setEnabled(true);
-        }else{
-            btnUpdateAtLogin.setEnabled(false);
+            edtUsername.setText(updatePositionStudent.getNameStd());
+            edtAddress.setText(updatePositionStudent.getHometown());
+            int position = arrayList.indexOf(updatePositionStudent.getStudyAt());
+            spn.setSelection(position);
         }
-        btnUpdateAtLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                BUTTON_UPDATE_CLICK ="clicked";
-                String getUser = edtUsername.getText().toString();
-                String getAddress = edtAddress.getText().toString();
 
-                if (getUser.length() == 0 || getUser.trim().equals("")) {
-                    Toast.makeText(MainActivity.this, "bạn phải nhập tên để sửa  !", Toast.LENGTH_SHORT).show();
-                } else if (getAddress.length() == 0 || getAddress.trim().equals("")) {
-                    Toast.makeText(MainActivity.this, "Bạn phải nhập quê quán để sửa !", Toast.LENGTH_SHORT).show();
-                } else {
-                    Intent intent = new Intent(getApplicationContext(), MainActivityHome.class);
-                    Student newStd = new Student(place,getUser,getAddress);
 
-                    intent.putExtra("new_place",place);
-                    intent.putExtra("new_name",getUser);
-                    intent.putExtra("new_hometown",getAddress);
-                    startActivity(intent);
-                }
-            }
-        });
-        if (btnSubmit.isSelected()){
-            btnUpdateAtLogin.setEnabled(false);
-        }
 
     }
-    private void selectValue(Spinner spinner,String place) {
-        for (int i = 0; i < spinner.getCount(); i++) {
-            if (spinner.getItemAtPosition(i).equals(place)) {
-                spinner.setSelection(i);
-                break;
-            }
-        }
-    }
+
+
 }

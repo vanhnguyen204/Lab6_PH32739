@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,18 +13,28 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
-public class ListStudentAdapter extends BaseAdapter {
+public class ListStudentAdapter extends BaseAdapter implements Filterable {
     Activity atv;
     ArrayList<Student> list;
-public static String setEnableClick = "";
+    ArrayList<Student> listold;
+
+
     public ListStudentAdapter(Activity atv, ArrayList<Student> list) {
+        this.listold = list;
         this.atv = atv;
         this.list = list;
     }
@@ -62,6 +73,7 @@ public static String setEnableClick = "";
         hometown.setText("Địa chỉ: " + std.getHometown());
 
         Button btnRemove = convertView.findViewById(R.id.btn_remove);
+
         btnRemove.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -92,22 +104,40 @@ public static String setEnableClick = "";
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-            setEnableClick ="enable";
-            String updateName = name.getText().toString().trim();
-            String updateHometown = hometown.getText().toString().trim();
-            String updatePlace = place.getText().toString().trim();
-            Intent intent = new Intent(atv, MainActivity.class);
-            intent.putExtra("place",updatePlace);
-            intent.putExtra("name",updateName.substring(updateName.indexOf("",8),updateName.length()));
-            intent.putExtra("home",updateHometown.substring(updateHometown.indexOf("",8),updateHometown.length()));
-            atv.startActivity(intent);
-
+                ((MainActivityHome)atv).setUpdateStudent(position);
             }
         });
-
-
 
         return convertView;
     }
 
+    @Override
+    public Filter getFilter() {
+        return new Filter() {
+            @Override
+            protected FilterResults performFiltering(CharSequence constraint) {
+                String strSearch = constraint.toString();
+                if (strSearch.isEmpty()) {
+                    list = listold;
+                } else {
+                    ArrayList<Student> list1 = new ArrayList<>();
+                    for (Student st : listold) {
+                        if (st.getNameStd().toLowerCase().contains(strSearch.toLowerCase())) {
+                            list1.add(st);
+                        }
+                    }
+                    list = list1;
+                }
+                FilterResults filterResults = new FilterResults();
+                filterResults.values = list;
+                return filterResults;
+            }
+
+            @Override
+            protected void publishResults(CharSequence constraint, FilterResults results) {
+                list = (ArrayList<Student>) results.values;
+                notifyDataSetChanged();
+            }
+        };
+    }
 }

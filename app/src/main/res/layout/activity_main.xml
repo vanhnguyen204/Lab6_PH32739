@@ -52,10 +52,5 @@
         android:layout_height="wrap_content"
         android:text="Submit"
         />
-    <Button
-        android:id="@+id/btn_updateBack"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Update"
-        />
+
 </LinearLayout>
